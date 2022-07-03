@@ -5,12 +5,13 @@
     fenix.url = "github:nix-community/fenix";
   };
 
-  outputs = { self, nixpkgs, flake-utils, naersk, fenix, ... }@inputs:
-  flake-utils.lib.eachSystem [ "x86_64-linux" ] (system: let
-    pname = "template";
-    overlay = _: prev: {
+  outputs = { self, nixpkgs, flake-utils, naersk, fenix, ... }@inputs: {
+    # overlay with package
+    overlays.default = _: prev: {
       ${pname} = prev.callPackage ./nix/default.nix { inherit naersk pname; };
     };
+  } // flake-utils.lib.eachSystem [ "x86_64-linux" ] (system: let
+    pname = "template";
     pkgs = import nixpkgs {
       inherit system;
       overlays = [ fenix.overlay overlay ];
@@ -29,9 +30,6 @@
         ${pname} = flake-utils.lib.mkApp { drv = packages.${pname}; };
         default = apps.${pname};
       };
-
-      # overlay with package
-      overlays.default = overlay;
 
       # `nix develop`
       devShells.default = pkgs.mkShell {
