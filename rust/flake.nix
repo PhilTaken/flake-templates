@@ -26,7 +26,7 @@
 
       # `nix run`
       apps = {
-        arm-rs = flake-utils.lib.mkApp { drv = packages.${pname}; };
+        ${pname} = flake-utils.lib.mkApp { drv = packages.${pname}; };
         default = apps.${pname};
       };
 
