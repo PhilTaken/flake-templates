@@ -23,6 +23,13 @@
           inherit system;
           overlays = [ self.overlay ];
         };
+
+        appEnv = pkgs.poetry2nix.mkPoetryEnv {
+          projectDir = ./.;
+          editablePackageSources = {
+            my-app = ./myapp;
+          };
+        };
       in
       {
         apps = {
@@ -31,10 +38,10 @@
 
         defaultApp = pkgs.myapp;
 
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [
+        devShells.default = appEnv.env.overrideAttrs (oldAttrs: {
+          buildInputs = with pkgs; [
               poetry
           ];
-        };
+        });
       }));
 }
