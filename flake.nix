@@ -7,6 +7,11 @@
         path = ./rust;
         description = "rust flake using naersk";
       };
+
+      python = {
+        path = ./python;
+        description = "simple python application using poetry2nix";
+      };
     };
   };
 }
