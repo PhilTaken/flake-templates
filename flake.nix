@@ -12,6 +12,11 @@
         path = ./python;
         description = "simple python application using poetry2nix";
       };
+
+      haskell = {
+        path = ./haskell;
+        description = "simple haskell application using hix (iohk)";
+      };
     };
   };
 }
