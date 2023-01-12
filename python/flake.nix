@@ -32,11 +32,10 @@
         };
       in
       {
-        apps = {
-          myapp = pkgs.myapp;
+        apps = rec {
+          myapp = flake-utils.lib.mkApp { drv = pkgs.myapp; };
+          default = myapp;
         };
-
-        defaultApp = pkgs.myapp;
 
         devShells.default = appEnv.env.overrideAttrs (oldAttrs: {
           buildInputs = with pkgs; [
